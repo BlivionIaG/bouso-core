@@ -2,7 +2,7 @@
 
 static int handler(void *user, const char *section, const char *name,
                    const char *value) {
-  config_t *config = (config_t *)user;
+  s_config_t *config = (s_config_t *)user;
 
   if (!strcmp(section, "git")) {
     if (!strcmp(name, "repo")) {
@@ -24,13 +24,13 @@ static int handler(void *user, const char *section, const char *name,
   return 1;
 }
 
-void config_init(config_t *config) {
-  memset(config, 0, sizeof(config_t));
+void config_init(s_config_t *config) {
+  memset(config, 0, sizeof(s_config_t));
   config->git_branch = strdup(DEFAULT_MAIN_BRANCH);
   config->auto_sync = 0;
 }
 
-bool config_load(config_t *config, const char *filename) {
+bool config_load(s_config_t *config, const char *filename) {
   if (ini_parse(filename, handler, config) < 0) {
     fprintf(stderr, "Error: Can't load config file '%s'\n", filename);
     return 0;
@@ -39,7 +39,7 @@ bool config_load(config_t *config, const char *filename) {
   return 1;
 }
 
-void config_free(config_t *config) {
+void config_free(s_config_t *config) {
   if (config->config_file)
     free(config->config_file);
   if (config->git_repo)

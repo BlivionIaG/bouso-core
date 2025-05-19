@@ -37,7 +37,7 @@ void print_usage(const char *program_name) {
   printf("  -h, --help          Display this help message\n");
 }
 
-bool parse_args(int argc, char *argv[], ProgramOptions *opts) {
+bool parse_args(int argc, char *argv[], s_program_options_t *opts) {
   static const struct option long_options[] = {
       {"verbose", no_argument, NULL, 'v'},
       {"config", required_argument, NULL, 'c'},

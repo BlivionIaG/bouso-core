@@ -9,6 +9,3 @@ obj/
 
 # Ignore executable
 bouso-core
-
-# Ignore lib directory
-lib/

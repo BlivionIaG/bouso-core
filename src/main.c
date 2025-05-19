@@ -21,7 +21,7 @@
 #include <stdlib.h>
 
 int main(int argc, char *argv[]) {
-  ProgramOptions opts;
+  s_program_options_t opts;
 
   if (!parse_args(argc, argv, &opts)) {
     return EXIT_FAILURE;
@@ -31,7 +31,7 @@ int main(int argc, char *argv[]) {
     printf("Verbose mode enabled\n");
     if (opts.config_file) {
       printf("Using config file: %s\n", opts.config_file);
-      config_t config;
+      s_config_t config;
       config_init(&config);
       config_load(&config, opts.config_file);
       printf("Config loaded successfully\n");

@@ -15,12 +15,12 @@ typedef struct {
   char *git_branch;
   char *notes_dir;
   bool auto_sync;
-} config_t;
+} s_config_t;
 
-void config_init(config_t *config);
+void config_init(s_config_t *config);
 
-bool config_load(config_t *config, const char *filename);
+bool config_load(s_config_t *config, const char *filename);
 
-void config_free(config_t *config);
+void config_free(s_config_t *config);
 
 #endif // CONFIG_H

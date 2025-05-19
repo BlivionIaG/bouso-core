@@ -28,12 +28,12 @@
 typedef struct {
   bool verbose;
   const char *config_file;
-} ProgramOptions;
+} s_program_options_t;
 
 void print_version(void);
 
 void print_usage(const char *program_name);
 
-bool parse_args(int argc, char *argv[], ProgramOptions *opts);
+bool parse_args(int argc, char *argv[], s_program_options_t *opts);
 
 #endif // BOUSO_ARGS_H
