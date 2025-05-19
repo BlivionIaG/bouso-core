@@ -1,0 +1,14 @@
+# Ignore config file
+config.ini
+
+# Ignore build directory
+build/
+
+# Ignore object directory
+obj/
+
+# Ignore executable
+bouso-core
+
+# Ignore lib directory
+lib/

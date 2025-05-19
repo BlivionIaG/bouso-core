@@ -15,6 +15,7 @@ SRC_DIR = src
 OBJ_DIR = obj
 INC_DIR = include
 DEP_DIR = $(OBJ_DIR)
+LIB_DIR = lib
 
 # Check for compiler availability if CC is not explicitly set
 ifeq ($(origin CC),default)
@@ -50,19 +51,39 @@ DEP = $(addprefix $(DEP_DIR)/, $(addsuffix .d, $(NOM)))
 # Enable parallel builds
 MAKEFLAGS += -j$(shell nproc)
 
+# ============================================================================
+# inih library configuration
+# ============================================================================
+
+# inih source and object files
+INIH_SRC = $(LIB_DIR)/inih/ini.c
+INIH_OBJ = $(OBJ_DIR)/ini.o
+OBJ += $(INIH_OBJ)
+
+.PHONY: all clean rebuild submodules dirs
+
 all: $(TARGET)
+
+submodules:
+	git submodule update --init --recursive
+
+dirs: submodules
+	mkdir -p $(OBJ_DIR)
 
 .NOTPARALLEL: rebuild
 rebuild: clean all
 
-$(OBJ_DIR):
-	mkdir -p $(OBJ_DIR)
-
 $(TARGET): $(OBJ)
 	$(CC) $(OBJ) $(LDFLAGS) -o $@
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
-	$(CC) -c $< -I$(INC_DIR) -o $@ $(CFLAGS)
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | dirs
+	$(CC) -c $< -I$(INC_DIR) -I$(LIB_DIR) -o $@ $(CFLAGS)
+
+# inih build rules
+$(INIH_SRC): | submodules
+
+$(INIH_OBJ): $(INIH_SRC) | dirs
+	$(CC) -c $< -I$(LIB_DIR)/inih -o $@ $(CFLAGS)
 
 # Include dependency files
 -include $(DEP)
@@ -73,6 +94,5 @@ clean: clear
 clear:
 	rm -f $(OBJ_DIR)/*.o $(OBJ_DIR)/*.d
 	rm -rf $(OBJ_DIR)
+	rm -rf $(LIB_DIR)
 	rm -f *.out *.gch
-
-.PHONY: all clean rebuild

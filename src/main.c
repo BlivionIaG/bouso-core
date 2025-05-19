@@ -17,6 +17,7 @@
  */
 
 #include "args.h"
+#include "config.h"
 #include <stdlib.h>
 
 int main(int argc, char *argv[]) {
@@ -30,6 +31,16 @@ int main(int argc, char *argv[]) {
     printf("Verbose mode enabled\n");
     if (opts.config_file) {
       printf("Using config file: %s\n", opts.config_file);
+      config_t config;
+      config_init(&config);
+      config_load(&config, opts.config_file);
+      printf("Config loaded successfully\n");
+      printf("Config file: %s\n", config.config_file);
+      printf("Git repo: %s\n", config.git_repo);
+      printf("Git branch: %s\n", config.git_branch);
+      printf("Notes directory: %s\n", config.notes_dir);
+      printf("Auto sync: %s\n", config.auto_sync ? "true" : "false");
+      config_free(&config);
     }
   }
 
